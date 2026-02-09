@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import type { User, UserRole } from "@/types";
 import { authService } from "@/services/authService";
 
@@ -25,8 +25,10 @@ export const loginWithGoogle = createAsyncThunk(
     try {
       const user = await authService.loginWithGoogle(email);
       if (!user) throw new Error("User not found. Please register first.");
-      localStorage.setItem("propvista_user", JSON.stringify(user));
-      return user;
+      // Return a deep copy to avoid shared references with service layer
+      const userCopy = JSON.parse(JSON.stringify(user)) as User;
+      localStorage.setItem("propvista_user", JSON.stringify(userCopy));
+      return userCopy;
     } catch (err) {
       return rejectWithValue((err as Error).message);
     }
@@ -47,22 +49,9 @@ export const register = createAsyncThunk(
         data.phone,
         data.registrationPaid
       );
-      localStorage.setItem("propvista_user", JSON.stringify(user));
-      return user;
-    } catch (err) {
-      return rejectWithValue((err as Error).message);
-    }
-  }
-);
-
-export const toggleFavorite = createAsyncThunk(
-  "auth/toggleFavorite",
-  async (propertyId: string, { getState, rejectWithValue }) => {
-    try {
-      const state = getState() as { auth: AuthState };
-      if (!state.auth.user) throw new Error("Not logged in");
-      const favorites = await authService.toggleFavorite(state.auth.user.id, propertyId);
-      return favorites;
+      const userCopy = JSON.parse(JSON.stringify(user)) as User;
+      localStorage.setItem("propvista_user", JSON.stringify(userCopy));
+      return userCopy;
     } catch (err) {
       return rejectWithValue((err as Error).message);
     }
@@ -81,6 +70,17 @@ const authSlice = createSlice({
     },
     clearError(state) {
       state.error = null;
+    },
+    toggleFavorite(state, action: PayloadAction<string>) {
+      if (!state.user) return;
+      const propertyId = action.payload;
+      const index = state.user.favorites.indexOf(propertyId);
+      if (index === -1) {
+        state.user.favorites = [...state.user.favorites, propertyId];
+      } else {
+        state.user.favorites = state.user.favorites.filter((id) => id !== propertyId);
+      }
+      localStorage.setItem("propvista_user", JSON.stringify(state.user));
     },
   },
   extraReducers: (builder) => {
@@ -110,15 +110,9 @@ const authSlice = createSlice({
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-      })
-      .addCase(toggleFavorite.fulfilled, (state, action) => {
-        if (state.user) {
-          state.user.favorites = action.payload;
-          localStorage.setItem("propvista_user", JSON.stringify(state.user));
-        }
       });
   },
 });
 
-export const { logout, clearError } = authSlice.actions;
+export const { logout, clearError, toggleFavorite } = authSlice.actions;
 export default authSlice.reducer;

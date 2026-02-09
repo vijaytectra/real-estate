@@ -64,22 +64,22 @@ export default function RegisterPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Full Name</Label>
+            <Label htmlFor="name">Full Name <span className="text-red-500">*</span></Label>
             <Input id="name" placeholder="John Doe" value={name} onChange={(e) => setName(e.target.value)} />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="reg-email">Email</Label>
+            <Label htmlFor="reg-email">Email <span className="text-red-500">*</span></Label>
             <Input id="reg-email" type="email" placeholder="john@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="phone">Phone Number</Label>
+            <Label htmlFor="phone">Phone Number <span className="text-red-500">*</span></Label>
             <Input id="phone" type="tel" placeholder="+91 9876543210" value={phone} onChange={(e) => setPhone(e.target.value)} />
           </div>
 
           <div className="space-y-2">
-            <Label>I want to</Label>
+            <Label>I want to <span className="text-red-500">*</span></Label>
             <Select value={role} onValueChange={(v) => setRole(v as UserRole)}>
               <SelectTrigger>
                 <SelectValue />

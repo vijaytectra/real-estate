@@ -47,13 +47,22 @@ export function Footer() {
           <div>
             <h4 className="font-semibold text-sm mb-4">Property Types</h4>
             <ul className="space-y-2">
-              {["1 BHK Apartments", "2 BHK Apartments", "3 BHK Apartments", "4 BHK Villas", "Premium Listings"].map(
-                (item) => (
-                  <li key={item}>
-                    <span className="text-sm text-muted-foreground">{item}</span>
-                  </li>
-                )
-              )}
+              {[
+                { label: "1 BHK Apartments", config: "1BHK" },
+                { label: "2 BHK Apartments", config: "2BHK" },
+                { label: "3 BHK Apartments", config: "3BHK" },
+                { label: "4 BHK Villas", config: "4BHK" },
+                { label: "Premium Listings", config: "" },
+              ].map((item) => (
+                <li key={item.label}>
+                  <Link
+                    to={item.config ? `/?config=${item.config}` : `/?premium=true`}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -92,15 +101,15 @@ export function Footer() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
           <p>&copy; {new Date().getFullYear()} PropVista. All rights reserved.</p>
           <div className="flex gap-4">
-            <span className="hover:text-foreground transition-colors cursor-pointer">
+            <Link to="/privacy-policy" className="hover:text-foreground transition-colors">
               Privacy Policy
-            </span>
-            <span className="hover:text-foreground transition-colors cursor-pointer">
+            </Link>
+            <Link to="/terms-of-service" className="hover:text-foreground transition-colors">
               Terms of Service
-            </span>
-            <span className="hover:text-foreground transition-colors cursor-pointer">
+            </Link>
+            <Link to="/ssl-secured" className="hover:text-foreground transition-colors">
               SSL Secured
-            </span>
+            </Link>
           </div>
         </div>
       </div>

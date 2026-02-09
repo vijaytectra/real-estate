@@ -13,6 +13,10 @@ const RegisterPage = lazy(() => import("@/features/auth/RegisterPage"));
 const BuyerDashboard = lazy(() => import("@/features/buyer/BuyerDashboard"));
 const SellerDashboard = lazy(() => import("@/features/seller/SellerDashboard"));
 const AdminPanel = lazy(() => import("@/features/admin/AdminPanel"));
+const PrivacyPolicy = lazy(() => import("@/features/pages/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("@/features/pages/TermsOfService"));
+const SSLSecured = lazy(() => import("@/features/pages/SSLSecured"));
+const NotFoundPage = lazy(() => import("@/features/pages/NotFoundPage"));
 
 function PageLoader() {
   return (
@@ -70,16 +74,13 @@ export function AppRoutes() {
             }
           />
 
+          {/* Static Pages */}
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/ssl-secured" element={<SSLSecured />} />
+
           {/* Catch-all */}
-          <Route
-            path="*"
-            element={
-              <div className="flex flex-col items-center justify-center py-20 text-center">
-                <h1 className="font-display text-4xl font-bold">404</h1>
-                <p className="text-muted-foreground mt-2">Page not found</p>
-              </div>
-            }
-          />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </Suspense>

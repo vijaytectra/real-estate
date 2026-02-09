@@ -24,6 +24,7 @@ const statusColors: Record<string, "default" | "success" | "warning" | "secondar
 export default function BuyerDashboard() {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((s) => s.auth);
+  const favorites = useAppSelector((s) => s.auth.user?.favorites ?? []);
   const { appointments, loading } = useAppSelector((s) => s.appointments);
   const { emailToggle, smsToggle } = useAppSelector((s) => s.notifications);
 
@@ -32,7 +33,7 @@ export default function BuyerDashboard() {
   }, [user, dispatch]);
 
   const savedProperties = mockProperties.filter((p) =>
-    user?.favorites.includes(p.id)
+    favorites.includes(p.id)
   );
 
   return (

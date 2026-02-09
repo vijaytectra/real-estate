@@ -297,7 +297,6 @@ export const mockProperties: Property[] = [
     images: [
       "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&h=600&fit=crop",
       "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1600566753376-12c8ab7a5a2a?w=800&h=600&fit=crop",
       "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&h=600&fit=crop",
       "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
     ],

@@ -5,12 +5,14 @@ import { store } from "@/store/store";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { AppRoutes } from "@/routes/AppRoutes";
 import { CompareBar } from "@/components/common/CompareBar";
+import { ScrollToTop } from "@/components/common/ScrollToTop";
 
 export default function App() {
   return (
     <Provider store={store}>
       <ThemeProvider>
         <BrowserRouter>
+          <ScrollToTop />
           <AppRoutes />
           <CompareBar />
           <Toaster

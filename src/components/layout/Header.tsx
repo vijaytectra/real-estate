@@ -127,59 +127,61 @@ export function Header() {
             {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
           </Button>
 
-          {/* Notifications */}
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="ghost" size="icon" className="relative" aria-label="Notifications">
-                <Bell className="h-5 w-5" />
-                {unreadCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-white">
-                    {unreadCount}
-                  </span>
-                )}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-80 p-0" align="end">
-              <div className="flex items-center justify-between border-b p-3">
-                <h4 className="text-sm font-semibold">Notifications</h4>
-                {unreadCount > 0 && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-xs h-auto py-1"
-                    onClick={() => dispatch(markAllAsRead())}
-                  >
-                    Mark all read
-                  </Button>
-                )}
-              </div>
-              <ScrollArea className="h-72">
-                {notifications.length === 0 ? (
-                  <p className="p-4 text-sm text-muted-foreground text-center">
-                    No notifications yet
-                  </p>
-                ) : (
-                  <div className="divide-y">
-                    {notifications.map((notif) => (
-                      <button
-                        key={notif.id}
-                        onClick={() => dispatch(markAsRead(notif.id))}
-                        className={`w-full text-left p-3 hover:bg-muted transition-colors ${
-                          !notif.read ? "bg-primary/5" : ""
-                        }`}
-                      >
-                        <p className="text-sm font-medium">{notif.title}</p>
-                        <p className="text-xs text-muted-foreground mt-0.5">{notif.message}</p>
-                        <p className="text-xs text-muted-foreground/60 mt-1">
-                          {formatDate(notif.createdAt)}
-                        </p>
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </ScrollArea>
-            </PopoverContent>
-          </Popover>
+          {/* Notifications — only shown when logged in */}
+          {isAuthenticated && (
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="ghost" size="icon" className="relative" aria-label="Notifications">
+                  <Bell className="h-5 w-5" />
+                  {unreadCount > 0 && (
+                    <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-white">
+                      {unreadCount}
+                    </span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-80 p-0" align="end">
+                <div className="flex items-center justify-between border-b p-3">
+                  <h4 className="text-sm font-semibold">Notifications</h4>
+                  {unreadCount > 0 && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-xs h-auto py-1"
+                      onClick={() => dispatch(markAllAsRead())}
+                    >
+                      Mark all read
+                    </Button>
+                  )}
+                </div>
+                <ScrollArea className="h-72">
+                  {notifications.length === 0 ? (
+                    <p className="p-4 text-sm text-muted-foreground text-center">
+                      No notifications yet
+                    </p>
+                  ) : (
+                    <div className="divide-y">
+                      {notifications.map((notif) => (
+                        <button
+                          key={notif.id}
+                          onClick={() => dispatch(markAsRead(notif.id))}
+                          className={`w-full text-left p-3 hover:bg-muted transition-colors ${
+                            !notif.read ? "bg-primary/5" : ""
+                          }`}
+                        >
+                          <p className="text-sm font-medium">{notif.title}</p>
+                          <p className="text-xs text-muted-foreground mt-0.5">{notif.message}</p>
+                          <p className="text-xs text-muted-foreground/60 mt-1">
+                            {formatDate(notif.createdAt)}
+                          </p>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </ScrollArea>
+              </PopoverContent>
+            </Popover>
+          )}
 
           {/* Auth */}
           {isAuthenticated && user ? (
